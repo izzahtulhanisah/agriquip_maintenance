@@ -245,7 +245,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												</div>
 										</div>
 								</div>
-
+ 
 								<div class="text-left">
 										<button class='btn btn-primary btn-sm' onclick="printDiv('printableArea')">Print</button>
 								</div>
