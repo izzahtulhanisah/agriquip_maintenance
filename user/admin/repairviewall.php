@@ -87,6 +87,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		</script>
 
+		<?php include "database.php"; ?>
+
 </head>
 <body>
 <div id="wrapper">
@@ -174,7 +176,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		    	<h2>
 				<a href="dashboard.php">Home</a>
 				<i class="fa fa-angle-right"></i>
-				<span>Repair Form</span>
+				<span>View Repair Form</span>
 				</h2>
 		    </div>
 		<!--//banner-->
@@ -182,101 +184,55 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  	<div class="blank">
 
 		<?php
-				// error_reporting(0);
-				date_default_timezone_set("Asia/Kuala_Lumpur");
-				include "database.php";
+				$repair_id = $_GET['repair_id'];
+				$sql = "SELECT company.company_name, equipment_type.type_name, equipment.equipment_no, repair.date_released
+								FROM company
+								LEFT JOIN equipment_type ON company.company_name=equipment_type.company_name
+								LEFT JOIN equipment ON equipment_type.type_name=equipment.type_name
+								LEFT JOIN repair ON equipment.equipment_no=repair.equipment_no
+								WHERE repair.repair_id='$repair_id'";
+				$result = $conn->query($sql);
+				// $row = mysqli_fetch_array ($result);
+				while ($row = $result->fetch_assoc()){
 
-				if(isset($_POST['send'])){
-
-				$type_name = $_POST['type_name'];
-				$equipment_no = $_POST['equipment_no'];
-				$date_received = $_POST['date_received'];
-				$submitted_by = $_POST['submitted_by'];
-				$date_released = $_POST['date_released'];
-				$remark = $_POST['remark'];
-
-				$sql = "INSERT INTO repair (type_name,equipment_no,date_received,submitted_by,date_released,remark)
-				    VALUES ('$type_name','$equipment_no','$date_received','$submitted_by','$date_released','$remark')";
-				$result = mysqli_query($conn,$sql);
-
-
-
-				if($result === TRUE){
-					echo "<script type = \"text/javascript\">
-						alert(\"Successfully Submitted Repair Form\");
-						window.location = (\"repairlist.php\")
-						</script>";
-					}
-
-				else {
-					echo "<script type = \"text/javascript\">
-						alert(\"Failed to Submit Repair Form\");
-						window.location = (\"repairform.php\")
-						</script>";
-					}
-				}
+				$company_name = $row['company_name'];
+				$type_name = $row['type_name'];
+				$equipment_no = $row['equipment_no'];
+				$date_released = $row['date_released'];
 				?>
 
 
 			<div class="blank-page">
-
+				<div id="printableArea">
 				<div class="header">
+
 						<h4 class="title"><center>REPAIR MAINTENANCE FORM</center></h4>
 				</div>
 				<hr>
 				<div class="content">
-						<form action="" method="post">
-							<input type="hidden" name="repair_id">
+					<p align="right">Repair Form Number : #<?php echo $repair_id; ?></p>
 								<div class="row">
-										<div class="col-md-6">
+									<div class="col-md-6">
+											<div class="form-group">
+													<label>Company</label>
+													<b><input type="text" value="<?php echo $company_name; ?>" class="form-control border-input" disabled></b>
+											</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
 											<div class="form-group">
 													<label>Equipment Type</label>
-													<select class="form-control border-input select1" name= "type_name" id="type_name">
-															<option value="" selected>Please select</option>
-															<?php
-
-															$selecttype = "SELECT * FROM equipment_type";
-															$resulttype = $conn->query($selecttype);
-															while($rowtype = $resulttype->fetch_assoc()){
-																$type_name = $rowtype["type_name"];
-
-															echo "<option>". $type_name ."</option>";
-
-															}
-															?>
-													</select>
+													<b><input type="text" value="<?php echo $type_name; ?>" class="form-control border-input" disabled></b>
 											</div>
-										</div>
-
-										<div class="col-md-6">
-												<div class="form-group">
-													<label>Equipment Number</label>
-													<select class="form-control border-input select2" name= "equipment_no" id="type_name">
-															<option value="" selected>Please select</option>
-															<?php
-
-															$selectequipment = "SELECT * FROM equipment ORDER BY equipment_no ASC";
-															$resultequipment = $conn->query($selectequipment);
-															while($rowequipment = $resultequipment->fetch_assoc()){
-																$type_name = $rowequipment["type_name"];
-																$equipment_no = $rowequipment["equipment_no"];
-
-															echo "<option class='". $type_name ."'>". $equipment_no ."</option>";
-
-															}
-															?>
-													</select>
-												</div>
-										</div>
-								</div>
-
-								<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-														<label>Date Received</label>
-														<input type="date" name="date_received" class="form-control border-input">
-												</div>
-										</div>
+									</div>
+									<div class="col-md-6">
+											<div class="form-group">
+												<label>Equipment Number</label>
+												<b><input type="text" value="<?php echo $equipment_no; ?>" class="form-control border-input" disabled></b>
+											</div>
+									</div>
 								</div>
 
 								<hr>
@@ -284,56 +240,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<div class="row">
 										<div class="col-md-6">
 												<div class="form-group">
-														<label>Part(s)</label>
-														<div class="checkbox">
-																<label>
-																		<input type="checkbox" value="">1. Turn Table
-																</label>
-														</div>
-														<div class="checkbox">
-																<label>
-																		<input type="checkbox" value="">2. Steering Frame
-																</label>
-														</div>
-												</div>
-										</div>
-								</div>
-
-								<hr>
-
-								<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-														<label>Submitted By</label>
-														<input type="text" name="submitted_by" class="form-control border-input" placeholder="eg: Izzahtul Hanisah">
-												</div>
-										</div>
-										<div class="col-md-6">
-												<div class="form-group">
-														<label>Date Release</label>
-														<input type="date" name="date_released" class="form-control border-input">
-												</div>
-										</div>
-								</div>
-
-								<div class="row">
-										<div class="col-md-12">
-												<div class="form-group">
-														<label>Remark</label>
-														<textarea rows="5" name="remark" class="form-control border-input"
-														placeholder="Any description"></textarea>
+														<label>Date Released</label>
+														<b><input type="date" value="<?php echo $date_released; ?>" class="form-control border-input" disabled></b>
 												</div>
 										</div>
 								</div>
 
 								<div class="text-left">
-										<button type="submit" name="send" class="btn btn-primary btn-fill btn-wd">Submit</button>
+										<button class='btn btn-primary btn-sm' onclick="printDiv('printableArea')">Print</button>
 								</div>
 								<div class="clearfix"></div>
-						</form>
-				</div>
 
+				</div>
+			</div>
 	    </div>
+		<?php } ?>
 	</div>
 
 	<!--//faq-->
@@ -346,6 +267,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
        </div>
 
 <!---->
+	<script>
+	function printDiv(printableArea) {
+     var printContents = document.getElementById(printableArea).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+	</script>
 <!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>
 	<script src="js/scripts.js"></script>
