@@ -246,15 +246,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				    VALUES ('$type_name','$equipment_no','$date_received','$submitted_by','$date_released','$remark')";
 				$result = mysqli_query($conn,$sql);
 
-				$sql2 = "INSERT INTO repair_part (repairpart_id,part_no,quantity,repair_id)
-						VALUES ('$repairpart_id','$part_no','$quantity','$repair_id')";
-				$result2 = mysqli_query($conn,$sql2);
 
-
-				if($result2 === TRUE){
+				if($result === TRUE){
 					echo "<script type = \"text/javascript\">
 						alert(\"Successfully Submitted Repair Form\");
-						window.location = (\"repairlist.php\")
+						window.location = (\"repairlist.php?repair_id=".$repair_id."\")
 						</script>";
 					}
 
@@ -333,39 +329,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<hr>
 
 								<div class="row">
-										<div class="col-md-4">
-												<div class="form-group">
-														<label>Part(s)</label>
-														<select class="form-control border-input select3" name= "part_no" id="part_no">
-																<option value="" selected>Please select</option>
-																<?php
-
-																$selectpart = "SELECT * FROM part ORDER BY part_no ASC";
-																$resultpart = $conn->query($selectpart);
-																while($rowpart = $resultpart->fetch_assoc()){
-																	$type_name = $rowpart["type_name"];
-																	$part_no = $rowpart["part_no"];
-
-																echo "<option class='". $type_name ."'>". $part_no ."</option>";
-
-																}
-																?>
-
-
-														</select>
-												</div>
-										</div>
-										<div class="col-md-2">
-												<div class="form-group">
-														<label>Quantity</label>
-														<input type="number" name="quantity" class="form-control border-input">
-												</div>
-										</div>
-								</div>
-
-								<hr>
-
-								<div class="row">
 										<div class="col-md-6">
 												<div class="form-group">
 														<label>Submitted By</label>
@@ -396,7 +359,69 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<div class="clearfix"></div>
 						</form>
 				</div>
+				<hr>
+				<form id="form1">
+				<div class="row">
+						<div class="col-md-4">
+								<div class="form-group">
+										<label>Part(s)</label>
+										<select class="form-control border-input select3" name= "part_no" id="part_no">
+												<option value="" selected>Please select</option>
+												<?php
 
+												$selectpart = "SELECT * FROM part ORDER BY part_no ASC";
+												$resultpart = $conn->query($selectpart);
+												while($rowpart = $resultpart->fetch_assoc()){
+													$type_name = $rowpart["type_name"];
+													$part_no = $rowpart["part_no"];
+
+												echo "<option class='". $type_name ."'>". $part_no ."</option>";
+
+												}
+												?>
+
+
+										</select>
+								</div>
+						</div>
+						<div class="col-md-2">
+								<div class="form-group">
+										<label>Quantity</label>
+										<input type="number" name="quantity" class="form-control border-input">
+										<input type="hidden" name="repair_id" class="form-control border-input" value="<?php if(isset($_REQUEST["repair_id"])){echo $_REQUEST["repair_id"];}?>">
+								</div>
+						</div>
+						<div class="col-md-2">
+								<button type="submit" id="submit" name="submit" class="btn btn-primary btn-fill btn-wd">Submit</button>
+						</div>
+				</div>
+			</form>
+			<script>
+				$(function () {
+				$('#form1').on('#submit', function (e) {
+					e.preventDefault();
+					$.ajax({
+					method: "post",
+					url: "post.php",
+					data: $('#form1').serialize(),
+					});
+				});
+				});
+			</script>
+			<div id="news" onload="GetNews()"></div>
+			<script>
+				function GetNews() {
+				$.ajax({
+				url: "loaddata.php",
+				success: (function (result) {
+					$("#news").html(result);
+				})
+				})
+				};
+
+				GetNews(); // To output when the page loads
+				setInterval(GetNews, (2 * 1000)); // x * 1000 to get it in seconds
+			</script>
 	    </div>
 	</div>
 
