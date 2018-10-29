@@ -26,33 +26,102 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<h1><a href="index.html">AgriQuip Maintenance </a></h1>
 
 		<div class="login-bottom">
-			<h2>Login</h2>
-			<form>
-			<div class="col-md-6">
-				<div class="login-mail">
-					<input type="text" placeholder="Email" >
-					<i class="fa fa-envelope"></i>
-				</div>
-				<div class="login-mail">
-					<input type="password" placeholder="Password" >
-					<i class="fa fa-lock"></i>
-				</div>
-				   <a class="news-letter " href="#">
-						 <label class="checkbox1"><input type="checkbox" name="checkbox" ><i> </i>Forget Password</label>
-					 </a>
-			</div>
+			 <ul id="myTab" class="nav nav-tabs" role="tablist">
+				 <li role="presentation" class="active"><a href="#staff" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Staff</a></li>
+				 <li role="presentation"><a href="#supervisor" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Supervisor</a></li>
+				 <li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Admin</a></li>
+			 </ul>
+			 <div id="myTabContent" class="tab-content">
+				 <!-- START TAB ONE TAB ONE TAB ONE START -->
+				 <div role="tabpanel" class="tab-pane fade in active" id="staff" aria-labelledby="home-tab">
+					 <h2>Login</h2>
+		 			<form action="user/staff/staff_login.php" id="staff_login" method="POST">
+		 			<div class="col-md-6">
+		 				<div class="login-mail">
+		 					<input type="text" placeholder="Staff ID" name="staff_id">
+		 					<i class="fa fa-envelope"></i>
+		 				</div>
+		 				<div class="login-mail">
+		 					<input type="password" placeholder="Password" name="staff_password">
+		 					<i class="fa fa-lock"></i>
+		 				</div>
+		 				   <a class="news-letter " href="#">
+		 						 <label class="checkbox1"><input type="checkbox" name="checkbox" ><i> </i>Forget Password</label>
+		 					 </a>
+		 			</div>
 
-			<div class="col-md-6 login-do">
-				<label class="hvr-shutter-in-horizontal login-sub">
-					<a href="user/admin/dashboard.php">Login</a>
-					<!-- <input type="submit" value="Login"> -->
-					</label>
-					<p>Do not have an account?</p>
-				<a href="signup.html" class="hvr-shutter-in-horizontal">Contact Admin</a>
-			</div>
+		 			<div class="col-md-6 login-do">
+		 				<label class="hvr-shutter-in-horizontal login-sub">
+		 					<input type="submit" value="Login">
+		 					</label>
+		 					<p>Do not have an account?</p>
+		 				<a href="signup.html" class="hvr-shutter-in-horizontal">Contact Admin</a>
+		 			</div>
+		 			<div class="clearfix"> </div>
+		 			</form>
+				 </div>
+				 <!-- END TAB ONE TAB ONE TAB ONE END -->
 
-			<div class="clearfix"> </div>
-			</form>
+				 <div role="tabpanel" class="tab-pane fade" id="supervisor" aria-labelledby="profile-tab">
+					 <h2>Login</h2>
+		 			<form action="user/supervisor/supervisor_login.php" id=supervisor_login" method="POST">
+		 			<div class="col-md-6">
+		 				<div class="login-mail">
+		 					<input type="text" placeholder="Supervisor ID" name="supervisor_id">
+		 					<i class="fa fa-envelope"></i>
+		 				</div>
+		 				<div class="login-mail">
+		 					<input type="password" placeholder="Password" name="supervisor_password">
+		 					<i class="fa fa-lock"></i>
+		 				</div>
+		 				   <a class="news-letter " href="#">
+		 						 <label class="checkbox1"><input type="checkbox" name="checkbox" ><i> </i>Forget Password</label>
+		 					 </a>
+		 			</div>
+
+		 			<div class="col-md-6 login-do">
+		 				<label class="hvr-shutter-in-horizontal login-sub">
+		 					<input type="submit" value="Login">
+		 					</label>
+		 					<p>Do not have an account?</p>
+		 				<a href="signup.html" class="hvr-shutter-in-horizontal">Contact Admin</a>
+		 			</div>
+		 			<div class="clearfix"> </div>
+		 			</form>
+				 </div>
+
+
+				 <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+					 <h2>Login</h2>
+		 			<form>
+		 			<div class="col-md-6">
+		 				<div class="login-mail">
+		 					<input type="text" placeholder="Email" >
+		 					<i class="fa fa-envelope"></i>
+		 				</div>
+		 				<div class="login-mail">
+		 					<input type="password" placeholder="Password" >
+		 					<i class="fa fa-lock"></i>
+		 				</div>
+		 				   <a class="news-letter " href="#">
+		 						 <label class="checkbox1"><input type="checkbox" name="checkbox" ><i> </i>Forget Password</label>
+		 					 </a>
+		 			</div>
+
+		 			<div class="col-md-6 login-do">
+		 				<label class="hvr-shutter-in-horizontal login-sub">
+		 					<a href="user/admin/dashboard.php">Login</a>
+		 					<!-- <input type="submit" value="Login"> -->
+		 					</label>
+		 					<p>Do not have an account?</p>
+		 				<a href="signup.html" class="hvr-shutter-in-horizontal">Contact Admin</a>
+		 			</div>
+		 			<div class="clearfix"> </div>
+		 			</form>
+				 </div>
+
+			 </div>
+
 		</div>
 	</div>
 		<!---->

@@ -87,6 +87,48 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		</script>
 
+		<!-- TEST TEST THIRD SELECT TEST TEST -->
+		<script>
+
+		$( document ).ready(function() {
+			$('#select1').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('#select3').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('#select3 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+
+		<script>
+
+		$( document ).ready(function() {
+			$('.select1').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('.select3').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('.select3 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+		<!-- TEST TEST THIRD SELECT TEST TEST -->
+
 </head>
 <body>
 <div id="wrapper">
@@ -188,6 +230,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				if(isset($_POST['send'])){
 
+				$repair_id = $_POST['repair_id'];
 				$type_name = $_POST['type_name'];
 				$equipment_no = $_POST['equipment_no'];
 				$date_received = $_POST['date_received'];
@@ -195,13 +238,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				$date_released = $_POST['date_released'];
 				$remark = $_POST['remark'];
 
+				$repairpart_id = $_POST['repairpart_id'];
+				$part_no = $_POST['part_no'];
+				$quantity = $_POST['quantity'];
+
 				$sql = "INSERT INTO repair (type_name,equipment_no,date_received,submitted_by,date_released,remark)
 				    VALUES ('$type_name','$equipment_no','$date_received','$submitted_by','$date_released','$remark')";
 				$result = mysqli_query($conn,$sql);
 
+				$sql2 = "INSERT INTO repair_part (repairpart_id,part_no,quantity,repair_id)
+						VALUES ('$repairpart_id','$part_no','$quantity','$repair_id')";
+				$result2 = mysqli_query($conn,$sql2);
 
 
-				if($result === TRUE){
+				if($result2 === TRUE){
 					echo "<script type = \"text/javascript\">
 						alert(\"Successfully Submitted Repair Form\");
 						window.location = (\"repairlist.php\")
@@ -227,6 +277,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="content">
 						<form action="" method="post">
 							<input type="hidden" name="repair_id">
+							<input type="hidden" name="repairpart_id">
 								<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
@@ -282,19 +333,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<hr>
 
 								<div class="row">
-										<div class="col-md-6">
+										<div class="col-md-4">
 												<div class="form-group">
 														<label>Part(s)</label>
-														<div class="checkbox">
-																<label>
-																		<input type="checkbox" value="">1. Turn Table
-																</label>
-														</div>
-														<div class="checkbox">
-																<label>
-																		<input type="checkbox" value="">2. Steering Frame
-																</label>
-														</div>
+														<select class="form-control border-input select3" name= "part_no" id="part_no">
+																<option value="" selected>Please select</option>
+																<?php
+
+																$selectpart = "SELECT * FROM part ORDER BY part_no ASC";
+																$resultpart = $conn->query($selectpart);
+																while($rowpart = $resultpart->fetch_assoc()){
+																	$type_name = $rowpart["type_name"];
+																	$part_no = $rowpart["part_no"];
+
+																echo "<option class='". $type_name ."'>". $part_no ."</option>";
+
+																}
+																?>
+
+
+														</select>
+												</div>
+										</div>
+										<div class="col-md-2">
+												<div class="form-group">
+														<label>Quantity</label>
+														<input type="number" name="quantity" class="form-control border-input">
 												</div>
 										</div>
 								</div>

@@ -91,12 +91,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<script>
 
 		$( document ).ready(function() {
-			$('#select2').on("change", function(){
+			$('#select1').on("change", function(){
 			  var selectedClass = $(this).val(); //store the selected value
 			  $('#select3').val("");             //clear the second dropdown selected value
 
 			  //now loop through the 2nd dropdown, hide the unwanted options
 			  $('#select3 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+
+		<script>
+
+		$( document ).ready(function() {
+			$('.select1').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('.select3').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('.select3 option').each(function () {
 				var newValue = $(this).attr('class');
 				if (selectedClass != newValue && selectedClass != "") {
 					$(this).hide();
@@ -213,32 +233,50 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				if(isset($_POST['send'])){
 
+				$parts = count($_POST["part"]);
 				$type_name = $_POST['type_name'];
 				$equipment_no = $_POST['equipment_no'];
 				$date_received = $_POST['date_received'];
+				$part = $_POST['part'];
 				$submitted_by = $_POST['submitted_by'];
 				$date_released = $_POST['date_released'];
 				$remark = $_POST['remark'];
 
-				$sql = "INSERT INTO repair (type_name,equipment_no,date_received,submitted_by,date_released,remark)
-				    VALUES ('$type_name','$equipment_no','$date_received','$submitted_by','$date_released','$remark')";
-				$result = mysqli_query($conn,$sql);
-
-
-
-				if($result === TRUE){
-					echo "<script type = \"text/javascript\">
-						alert(\"Successfully Submitted Repair Form\");
-						window.location = (\"repairlist.php\")
-						</script>";
+				if($parts > 1)
+				{
+					for($i=0; $i<$parts; $i++)
+					{
+						if(trim($_POST["part"][$i] != ''))
+						{
+							$sql = "INSERT INTO repair(part) VALUES('".mysqli_real_escape_string($connect, $_POST["part"][$i])."')";
+							mysqli_query($connect, $sql);
+						}
 					}
+					echo "Data Inserted";
+				}
+				else
+				{
+					echo "Please Enter Name";
+				}
 
-				else {
-					echo "<script type = \"text/javascript\">
-						alert(\"Failed to Submit Repair Form\");
-						window.location = (\"repairform.php\")
-						</script>";
-					}
+
+				// $sql = "INSERT INTO repair (type_name,equipment_no,date_received,part,submitted_by,date_released,remark)
+				//     VALUES ('$type_name','$equipment_no','$date_received','$part','$submitted_by','$date_released','$remark')";
+				// $result = mysqli_query($conn,$sql);
+				//
+				// if($result === TRUE){
+				// 	echo "<script type = \"text/javascript\">
+				// 		alert(\"Successfully Submitted Repair Form\");
+				// 		window.location = (\"repairlist.php\")
+				// 		</script>";
+				// 	}
+				//
+				// else {
+				// 	echo "<script type = \"text/javascript\">
+				// 		alert(\"Failed to Submit Repair Form\");
+				// 		window.location = (\"repairform.php\")
+				// 		</script>";
+				// 	}
 				}
 				?>
 
@@ -250,7 +288,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 				<hr>
 				<div class="content">
-						<form action="" method="post">
+						<form action="" method="post" name="add_repair" id="add_repair">
 							<input type="hidden" name="repair_id">
 								<div class="row">
 										<div class="col-md-6">
@@ -307,6 +345,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</div>
 
 								<hr>
+
+								<div class="table-responsive">
+									<table class="table table-bordered" id="dynamic_field">
+										<tr>
+											<td><input type="text" name="part" placeholder="Enter Part" class="form-control name_list" /></td>
+											<td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
+										</tr>
+									</table>
+
+								</div>
 
 								<div class="row">
 										<div class="col-md-6">
@@ -382,5 +430,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<script src="js/jquery.nicescroll.js"></script>
 	<script src="js/scripts.js"></script>
 	<!--//scrolling js-->
+
+	<script>
+	$(document).ready(function(){
+		var i=1;
+		$('#add').click(function(){
+			i++;
+			$('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="part" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+		});
+
+		$(document).on('click', '.btn_remove', function(){
+			var button_id = $(this).attr("id");
+			$('#row'+button_id+'').remove();
+		});
+
+		$('#send').click(function(){
+			$.ajax({
+				method:"POST",
+				data:$('#add_repair').serialize(),
+				success:function(data)
+				{
+					alert(data);
+					$('#add_repair')[0].reset();
+				}
+			});
+		});
+
+	});
+	</script>
+
+
 </body>
 </html>
