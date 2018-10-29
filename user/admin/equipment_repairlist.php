@@ -261,12 +261,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 														 <br>
 														 <div class="row">
 																<div class="col-md-4">
-																		<label>Date Release :</label>
+																		<label>Submitted By :</label>
+																	</div>
+																 <div class="col-md-8" align="left">
+																		<b><input class="form-control" name="submitted_by" type="text" value="<?php echo $submitted_by; ?>" ></input></b>
+																</div>
+														 </div>
+														 <br>
+														 <div class="row">
+																<div class="col-md-4">
+																		<label>Date Released :</label>
 																	</div>
 																 <div class="col-md-8" align="left">
 																		<b><input class="form-control" name="date_released" type="date" value="<?php echo $date_released; ?>" ></input></b>
 																</div>
 														 </div>
+														 <br>
+														 <div class="row">
+					                      <div class="col-md-4">
+					                          <label>Remark :</label>
+					                       </div>
+					                       <div class="col-md-8" align="left">
+					                          <b><textarea rows="5" name="remark" class="form-control border-input"><?php echo $remark; ?></textarea></b>
+					                     </div>
+					                  </div>
+														<br>
 
 															 <div class="modal-footer">
 																 <span class="pull-left"><button type="button" class="btn btn-bg-grey" data-dismiss="modal">Close</button></span>
@@ -284,20 +303,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="modal fade" id="delete_repair<?php echo $repair_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
-													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel"><center>DELETE MESSAGE</center></h4>
+													<div class="modal-header" style="background-color: salmon">
+														<h4 class="modal-title" id="delete_repairLabel"><center>DELETE MESSAGE</center></h4>
 													</div>
 													<div class="modal-body">
 
 														<form method="post" class="form-horizontal" role="form">
 															<input type="hidden" name="delete_id" value="<?php echo $repair_id; ?>">
 
-																<p><strong>Are you sure you want to delete repair form #<b><?php echo $repair_id; ?></b>?</strong></p>
-
+																<center><h5>Are you sure you want to delete repair form #<b><?php echo $repair_id; ?></b>?</h5></center>
+																<br>
 
 															<div class="modal-footer">
-																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-danger waves-effect" name="delete_repair"><span class="glyphicon glyphicon-trash"></span>DELETE</button>
+																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal">Close</button>
+																<button type="submit" class="btn btn-danger waves-effect" name="delete_repair"><span class="glyphicon glyphicon-trash"></span> Delete</button>
 															</div>
 														</form>
 													</div>
@@ -322,13 +341,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										$type_name = $_POST['type_name'];
 										$equipment_no = $_POST['equipment_no'];
 										$date_received = $_POST['date_received'];
+										$submitted_by = $_POST['submitted_by'];
 										$date_released = $_POST['date_released'];
+										$remark = $_POST['remark'];
 
 										$sql = "UPDATE repair SET
 														type_name='$type_name',
 														equipment_no='$equipment_no',
 														date_received='$date_received',
-														date_released='$date_released'
+														submitted_by='$submitted_by',
+														date_released='$date_released',
+														remark='$remark'
 														WHERE repair_id='$update_id' ";
 
 											if ($conn->query($sql) === TRUE) {

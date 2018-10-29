@@ -28,10 +28,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="css/custom.css" rel="stylesheet">
 <script src="js/custom.js"></script>
 <script src="js/screenfull.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-
 		<script>
 		$(function () {
 			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
@@ -50,8 +46,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		});
 		</script>
-
-		<!-- DISPLAY SELECTED OPTIONS -->
 
 		<script>
 
@@ -93,6 +87,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		</script>
 
+		<!-- TEST TEST THIRD SELECT TEST TEST -->
+		<script>
+
+		$( document ).ready(function() {
+			$('#select2').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('#select3').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('#select3 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+		<!-- TEST TEST THIRD SELECT TEST TEST -->
+
+		<script src="jquery.js"></script>
+		<script src="jquery.chained.js"></script>
+
 </head>
 <body>
 <div id="wrapper">
@@ -132,7 +151,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <ul class="nav" id="side-menu">
 
                     <li>
-                        <a href="index.html" class=" hvr-bounce-to-right"><i class="fa fa-home nav_icon"></i><span class="nav-label"> Dashboard</span> </a>
+                        <a href="dashboard.php" class=" hvr-bounce-to-right"><i class="fa fa-home nav_icon"></i><span class="nav-label"> Dashboard</span> </a>
                     </li>
 
 										<li>
@@ -163,7 +182,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </li>
 
 										<li>
-                        <a href="gallery.html" class=" hvr-bounce-to-right"><i class="fa fa-newspaper-o nav_icon"></i> <span class="nav-label">Report</span> </a>
+                        <a href="report.php" class=" hvr-bounce-to-right"><i class="fa fa-newspaper-o nav_icon"></i> <span class="nav-label">Report</span> </a>
                     </li>
 										<li>
                         <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-user nav_icon"></i> <span class="nav-label">User Profile</span></a>
@@ -180,7 +199,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		    	<h2>
 				<a href="dashboard.php">Home</a>
 				<i class="fa fa-angle-right"></i>
-				<span>New Equipment</span>
+				<span>Repair Form</span>
 				</h2>
 		    </div>
 		<!--//banner-->
@@ -193,97 +212,60 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				include "database.php";
 
 				if(isset($_POST['send'])){
-				$type_id = $_POST['type_id'];
+
 				$type_name = $_POST['type_name'];
 				$equipment_no = $_POST['equipment_no'];
-				$manufacture_year = $_POST['manufacture_year'];
-				$seriel_no = $_POST['seriel_no'];
+				$date_received = $_POST['date_received'];
+				$submitted_by = $_POST['submitted_by'];
+				$date_released = $_POST['date_released'];
 				$remark = $_POST['remark'];
 
-				$check = mysqli_query($conn, "SELECT * FROM equipment WHERE equipment_no='".$equipment_no."'");
-
-				    if (!$check)
-				    {
-				        die('Error: ' . mysqli_error($con));
-				    }
-
-				if(mysqli_num_rows($check) > 0){
-
-				    echo "<i><h4 style='color:red;'> Equipment No : $equipment_no </h4><h4 style='color:blue;'>ALREADY EXISTS</h4></i>";
-
-				}else{
-
-				  $sql = "INSERT INTO equipment (type_id,type_name,equipment_no,manufacture_year,seriel_no,remark)
-				      VALUES ('$type_id','$type_name','$equipment_no','$manufacture_year','$seriel_no','$remark')";
-				  $result = mysqli_query($conn,$sql);
-
-				        if($result === TRUE){
-				          echo "<script type = \"text/javascript\">
-				            alert(\"Successfully Added New Equipment\");
-				            window.location = (\"equipmentlist.php\")
-				            </script>";
-				          }
-
-				        else {
-				          echo "<script type = \"text/javascript\">
-				            alert(\"Failed to Add New Equipment\");
-				            window.location = (\"equipmentform.php\")
-				            </script>";
-				          }
-
-				}
+				$sql = "INSERT INTO repair (type_name,equipment_no,date_received,submitted_by,date_released,remark)
+				    VALUES ('$type_name','$equipment_no','$date_received','$submitted_by','$date_released','$remark')";
+				$result = mysqli_query($conn,$sql);
 
 
+
+				if($result === TRUE){
+					echo "<script type = \"text/javascript\">
+						alert(\"Successfully Submitted Repair Form\");
+						window.location = (\"repairlist.php\")
+						</script>";
+					}
+
+				else {
+					echo "<script type = \"text/javascript\">
+						alert(\"Failed to Submit Repair Form\");
+						window.location = (\"repairform.php\")
+						</script>";
+					}
 				}
 				?>
+
 
 			<div class="blank-page">
 
 				<div class="header">
-						<h4 class="title"><center>EQUIPMENT REGISTRATION FORM</center></h4>
+						<h4 class="title"><center>REPAIR MAINTENANCE FORM</center></h4>
 				</div>
 				<hr>
 				<div class="content">
 						<form action="" method="post">
-
-							<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-												<label>Company</label>
-												<select class="form-control border-input select1" name= "company_name" id="company_name">
-														<option value="" selected>Please select</option>
-														<?php
-
-														$selectcompany = "SELECT * FROM company";
-														$resultcompany = $conn->query($selectcompany);
-														while($rowcompany = $resultcompany->fetch_assoc()){
-															$company_name = $rowcompany["company_name"];
-
-														echo "<option>". $company_name ."</option>";
-
-														}
-														?>
-												</select>
-										</div>
-									</div>
-							</div>
-
+							<input type="hidden" name="repair_id">
 								<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
 													<label>Equipment Type</label>
-													<select class="form-control border-input select2" name= "type_name" id="type_name">
+													<select class="form-control border-input select1" name= "type_name" id="type_name">
 															<option value="" selected>Please select</option>
 															<?php
 
 															$selecttype = "SELECT * FROM equipment_type";
 															$resulttype = $conn->query($selecttype);
 															while($rowtype = $resulttype->fetch_assoc()){
-																$company_name = $rowtype["company_name"];
 																$type_name = $rowtype["type_name"];
-																// $type_id = $rowtype["type_id"];
 
-															echo "<option class='". $company_name ."'>". $type_name ."</option>";
+															echo "<option>". $type_name ."</option>";
 
 															}
 															?>
@@ -294,53 +276,90 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="col-md-6">
 												<div class="form-group">
 													<label>Equipment Number</label>
-													<input type="text" class="form-control border-input" name="equipment_no" placeholder="Eg: MHBT335">
+													<select class="form-control border-input select2" name= "equipment_no" id="equipment_no">
+															<option value="" selected>Please select</option>
+															<?php
+
+															$selectequipment = "SELECT * FROM equipment ORDER BY equipment_no ASC";
+															$resultequipment = $conn->query($selectequipment);
+															while($rowequipment = $resultequipment->fetch_assoc()){
+																$type_name = $rowequipment["type_name"];
+																$equipment_no = $rowequipment["equipment_no"];
+
+															echo "<option class='". $type_name ."'>". $equipment_no ."</option>";
+
+															}
+															?>
+													</select>
+												</div>
+										</div>
+								</div>
+
+
+
+								<div class="row">
+										<div class="col-md-6">
+												<div class="form-group">
+														<label>Date Received</label>
+														<input type="date" name="date_received" class="form-control border-input">
+												</div>
+										</div>
+								</div>
+
+								<hr>
+
+								<div class="row">
+										<div class="col-md-6">
+												<div class="form-group">
+														<label>Part(s)</label>
+														<select class="form-control border-input select3" name= "part_no" id="part_no">
+																<option value="" selected>Please select</option>
+																<?php
+
+																$selectpart = "SELECT * FROM part ORDER BY part_no ASC";
+																$resultpart = $conn->query($selectpart);
+																while($rowpart = $resultpart->fetch_assoc()){
+																	$type_name = $rowpart["type_name"];
+																	$part_no = $rowpart["part_no"];
+
+																echo "<option class='". $type_name ."'>". $part_no ."</option>";
+
+																}
+																?>
+														</select>
+												</div>
+										</div>
+								</div>
+
+								<hr>
+
+								<div class="row">
+										<div class="col-md-6">
+												<div class="form-group">
+														<label>Submitted By</label>
+														<input type="text" name="submitted_by" class="form-control border-input" placeholder="eg: Izzahtul Hanisah">
+												</div>
+										</div>
+										<div class="col-md-6">
+												<div class="form-group">
+														<label>Date Release</label>
+														<input type="date" name="date_released" class="form-control border-input">
 												</div>
 										</div>
 								</div>
 
 								<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-														<label>Manufacture Year</label>
-														<input type="number" min="1900" max="2099" step="1" class="form-control border-input" name="manufacture_year" placeholder="Eg: 2010" >
-												</div>
-										</div>
-
-										<div class="col-md-6">
-												<div class="form-group">
-													<label>Serial Number</label><br>
-														<input type="text" class="form-control border-input" name="seriel_no" placeholder="Eg: 10012300433" >
-												</div>
-										</div>
-								</div>
-
-
-								<div class="row">
-										<div class="col-md-6">
+										<div class="col-md-12">
 												<div class="form-group">
 														<label>Remark</label>
-														<input type="text" class="form-control border-input" name="remark" placeholder="Eg: Anything">
+														<textarea rows="5" name="remark" class="form-control border-input"
+														placeholder="Any description"></textarea>
 												</div>
 										</div>
 								</div>
 
-								<?php
-
-								$selectid = "SELECT * FROM equipment_type WHERE type_name='$type_name'";
-								$resultid = $conn->query($selectid);
-								while($rowid = $resultid->fetch_assoc()){
-
-									$type_id = $rowid["type_id"];
-
-
-
-								}
-								?>
-								<input class="form-control" name="type_id" type="hidden" value="<?php echo $type_id;?>"></input>
-
 								<div class="text-left">
-										<button type="submit" class="btn btn-primary btn-fill btn-wd" name="send">Submit</button>
+										<button type="submit" name="send" class="btn btn-primary btn-fill btn-wd">Submit</button>
 								</div>
 								<div class="clearfix"></div>
 						</form>

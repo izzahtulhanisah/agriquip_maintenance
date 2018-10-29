@@ -55,6 +55,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="js/custom.js"></script>
 <script src="js/screenfull.js"></script>
 
+<!-- DataTables JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+
 		<script>
 		$(function () {
 			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
@@ -162,9 +174,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  	<!--banner-->
 		     <div class="banner">
 		    	<h2>
-				<a href="index.html">Home</a>
+				<a href="dashboard.php">Home</a>
 				<i class="fa fa-angle-right"></i>
-				<span>Manage Type</span>
+				<a href="companylist.php">Company</a>
+				<i class="fa fa-angle-right"></i>
+				<span>Equipment Type</span>
 				</h2>
 		    </div>
 		<!--//banner-->
@@ -186,6 +200,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="dataTable_wrapper">
 						<div class="table-responsive">
 						<table class="table table-bordered table-striped table-hover" id="dataTables-example">
+							<a class="btn btn-success pull-right" href="typeform.php">New Equipment Type</a>
 								<thead>
 										<tr>
 												<th>No.</th>
@@ -257,7 +272,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 										<td>
 											<div>
-												<button type="button" class="btn btn-sm btn-primary">Info</button>
+												<button type="button" class="btn btn-sm btn-primary">Details</button>
 												<button type="button" class="btn btn-sm btn-warning">Edit</button>
 												<button type="button" class="btn btn-sm btn-danger">Remove</button>
 											</div>
@@ -273,7 +288,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<br>
 
 		      <a href="javascript: window.history.go(-1)"><button type="button" class="btn btn-bg-grey">Back</button></a>
-					<a class="btn btn-success" href="typeform.php">New Equipment Type</a>
+
 
 		      <!-- <div class="modal fade" id="newTypeModal" tabindex="-1" role="dialog" aria-labelledby="newTypeModalLabel" aria-hidden="true" style="display: none;">
 		 					<div class="modal-dialog">
@@ -336,5 +351,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<script src="js/jquery.nicescroll.js"></script>
 	<script src="js/scripts.js"></script>
 	<!--//scrolling js-->
+
+	<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true,
+				dom: 'Bfrtip',
+				buttons: [
+					'copy', 'csv', 'excel', 'pdf', 'print'
+				]
+        });
+    });
+    </script>
 </body>
 </html>

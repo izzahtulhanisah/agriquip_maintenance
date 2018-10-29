@@ -275,7 +275,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="col-md-12">
 												<div class="form-group">
 														<label>Remark</label>
-														<b><textarea rows="5" value="<?php echo $remark; ?>" class="form-control border-input" disabled></textarea></b>
+														<b><textarea rows="5" class="form-control border-input" disabled><?php echo $remark; ?></textarea></b>
 												</div>
 										</div>
 								</div>

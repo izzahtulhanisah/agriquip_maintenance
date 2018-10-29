@@ -51,6 +51,47 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 		</script>
 
+		<script>
+
+		$( document ).ready(function() {
+			$('#select1').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('#select2').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('#select2 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+
+		<script>
+
+		$( document ).ready(function() {
+			$('.select1').on("change", function(){
+			  var selectedClass = $(this).val(); //store the selected value
+			  $('.select2').val("");             //clear the second dropdown selected value
+
+			  //now loop through the 2nd dropdown, hide the unwanted options
+			  $('.select2 option').each(function () {
+				var newValue = $(this).attr('class');
+				if (selectedClass != newValue && selectedClass != "") {
+					$(this).hide();
+				}
+			  else{$(this).show(); }
+			 });
+			});
+		});
+
+		</script>
+
+		
 
 
 </head>
@@ -188,19 +229,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="content">
 						<form action="" method="post">
 							<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-6">
+										<div class="form-group">
+												<label>Company</label>
+												<select class="form-control border-input select1" name= "company_name" id="company_name">
+														<option value="" selected>Please select</option>
+														<?php
+
+														$selectcompany = "SELECT * FROM company";
+														$resultcompany = $conn->query($selectcompany);
+														while($rowcompany = $resultcompany->fetch_assoc()){
+															$company_name = $rowcompany["company_name"];
+
+														echo "<option>". $company_name ."</option>";
+
+														}
+														?>
+												</select>
+										</div>
+									</div>
+
+									<div class="col-md-6">
 										<div class="form-group">
 												<label>Equipment Type</label>
-												<select class="form-control border-input" name= "type_name" id="type_name">
+												<select class="form-control border-input select2" name= "type_name" id="type_name">
 														<option value="" selected>Please select</option>
 														<?php
 
 														$selecttype = "SELECT * FROM equipment_type";
 														$resulttype = $conn->query($selecttype);
 														while($rowtype = $resulttype->fetch_assoc()){
+															$company_name = $rowtype["company_name"];
 															$type_name = $rowtype["type_name"];
 
-														echo "<option>". $type_name ."</option>";
+														echo "<option class='". $company_name ."'>". $type_name ."</option>";
 
 														}
 														?>
