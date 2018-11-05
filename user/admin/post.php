@@ -8,7 +8,7 @@ $part_no = mysqli_real_escape_string($conn, $_POST["part_no"]);
 $quantity = mysqli_real_escape_string($conn, $_POST["quantity"]);
 $repair_id = mysqli_real_escape_string($conn, $_POST["repair_id"]);
 
-$query = "INSERT INTO repair_part(part_no, quantity, repair_id)VALUES ('$part_no', '$quantity', '1')";
+$query = "INSERT INTO repair_part(part_no, quantity, repair_id)VALUES ('$part_no', '$quantity', '$repair_id')";
 mysqli_query($conn, $query);
 
 ?>

@@ -388,7 +388,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<div class="form-group">
 										<label>Quantity</label>
 										<input type="number" name="quantity" class="form-control border-input">
-										<input type="hidden" name="repair_id" class="form-control border-input" value="<?php if(isset($_REQUEST["repair_id"])){echo $_REQUEST["repair_id"];}?>">
+										<input type="hidden" name="repair_id" class="form-control border-input" value="<?php if(isset($_REQUEST["repair_id"])){ $idd = $_REQUEST["repair_id"]; echo $_REQUEST["repair_id"];}?>">
 								</div>
 						</div>
 						<div class="col-md-2">
@@ -398,12 +398,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</form>
 			<script>
 				$(function () {
-				$('#form1').on('#submit', function (e) {
+				$('#form1').on('submit', function (e) {
 					e.preventDefault();
 					$.ajax({
 					method: "post",
 					url: "post.php",
-					data: $('#form1').serialize(),
+					data: $('form').serialize(),
 					});
 				});
 				});
@@ -413,6 +413,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				function GetNews() {
 				$.ajax({
 				url: "loaddata.php",
+				method: "post",
+				data: {repair_id:<?php echo $_REQUEST["repair_id"]; ?>},
 				success: (function (result) {
 					$("#news").html(result);
 				})

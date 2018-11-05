@@ -2,9 +2,9 @@
 include 'database.php';
 
 
-if(isset($_REQUEST["repair_id"])){
-	$idd=$_REQUEST["repair_id"];
-$sql = "Select * from repair_part WHERE repair_id=$idd";
+
+	$idd = $_REQUEST["repair_id"];
+$sql = "Select * from repair_part WHERE repair_id='$idd'";
 $result = $result=mysqli_query($conn,$sql);
 while($row =  $result->fetch_assoc())
 {
@@ -21,5 +21,5 @@ echo("<table>
 </tbody>
 </table>");
 }
-}
+
 ?>
